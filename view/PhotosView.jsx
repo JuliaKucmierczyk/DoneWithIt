@@ -1,9 +1,50 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, FlatList, Image, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+const PhotoItem = ({ url, title }) => {
+  return (
+    <View style={styles.photoContainer}>
+      <Text style={styles.photoTitle}>{title}</Text>
+      <Image source={{ uri: url }} style={styles.photo} />
+    </View>
+  );
+};
 
 const PhotosView = () => {
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/photos"
+        );
+        setPhotos(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching photos:", error);
+      }
+    };
+
+    fetchPhotos();
+  }, []);
+
+  const renderPhoto = ({ item }) => <PhotoItem key={item.id} {...item} />;
+
   return (
     <View style={styles.contentView}>
       <Text style={styles.header}>Photos View</Text>
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <FlatList
+          data={photos}
+          renderItem={renderPhoto}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </View>
   );
 };
@@ -12,13 +53,30 @@ const styles = StyleSheet.create({
   contentView: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#f5f5f5",
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
+    margin: 10,
     color: "#333",
+  },
+  photoContainer: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    padding: 10,
+    margin: 10,
+    backgroundColor: "#fff",
+  },
+  photo: {
+    width: 350,
+    height: 200,
+    resizeMode: "center",
+  },
+  photoTitle: {
+    fontSize: 18,
+    paddingBottom: 20,
   },
 });
 

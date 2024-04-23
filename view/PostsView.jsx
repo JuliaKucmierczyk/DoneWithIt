@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import axios from "axios";
 
 const PostItem = ({ title, body }) => {
@@ -31,30 +31,48 @@ const PostsView = () => {
     fetchPosts();
   }, []);
 
+  const renderPost = ({ item }) => <PostItem key={item.id} {...item} />;
+
   return (
-    <View style={styles.header}>
-      <Text>Posts View</Text>
+    <View style={styles.contentView}>
+      <Text style={styles.header}>Posts</Text>
       {loading ? (
         <Text>Loading...</Text>
       ) : (
-        <View>
-          {posts.map((post) => (
-            <PostItem key={post.id} title={post.title} body={post.body} />
-          ))}
-        </View>
+        <FlatList
+          data={posts}
+          renderItem={renderPost}
+          keyExtractor={(item) => item.id}
+        />
       )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  contentView: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    margin: 10,
+    color: "#333",
+  },
   postContainer: {
+    padding: 15,
+    margin: 10,
+    borderRadius: 10,
+    backgroundColor: "#fff", // White background for post content
+    shadowColor: "#ccc", // Add a subtle shadow
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    margin: 10,
-    top: 140, // check that later
+    borderRadius: 10,
   },
   postTitle: {
     fontSize: 18,
