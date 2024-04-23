@@ -67,9 +67,10 @@ const styles = StyleSheet.create({
   navbar: {
     flexDirection: "row",
     justifyContent: "flex-end",
-    alignItems: "center",
-    height: 70,
-    paddingHorizontal: 10,
+    alignItems: "flex-end",
+    height: 80,
+    paddingBottom: 10,
+    paddingHorizontal: 20,
     backgroundColor: "#007bff",
     zIndex: 11,
   },

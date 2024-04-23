@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   contentView: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
   header: {
     fontSize: 24,
@@ -70,8 +71,8 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "#fff", // White background for user info
-    shadowColor: "#ccc", // Add a subtle shadow
+    backgroundColor: "#fff",
+    shadowColor: "#ccc",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 5,

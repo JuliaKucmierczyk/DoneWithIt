@@ -1,19 +1,29 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
+import UserDetails from "../view/pages/UserDetails";
 
-const UserItem = ({ name, email }) => {
+const UserItem = ({ name, email, onPress }) => {
   return (
-    <View style={styles.userContainer}>
-      <Text style={styles.userName}>{name}</Text>
-      <Text style={styles.userEmail}>{email}</Text>
-    </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.userContainer}>
+        <Text style={styles.userName}>{name}</Text>
+        <Text style={styles.userEmail}>{email}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const UsersView = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState(null); // State for selected user
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -31,13 +41,22 @@ const UsersView = () => {
     fetchUsers();
   }, []);
 
-  const renderUser = ({ item }) => <UserItem key={item.id} {...item} />;
+  const renderUser = ({ item }) => (
+    <UserItem
+      key={item.id}
+      name={item.name}
+      email={item.email}
+      onPress={() => setSelectedUser(item)}
+    />
+  );
 
   return (
     <View style={styles.contentView}>
       <Text style={styles.header}>Users View</Text>
       {loading ? (
         <Text>Loading...</Text>
+      ) : selectedUser ? (
+        <UserDetails user={selectedUser} />
       ) : (
         <FlatList
           data={users}
@@ -52,7 +71,6 @@ const UsersView = () => {
 const styles = StyleSheet.create({
   contentView: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
   },
   header: {
     fontSize: 24,
@@ -66,7 +84,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 350,
     padding: 10,
-    margin: 20,
+    margin: 10,
     borderRadius: 10,
     backgroundColor: "#fff",
     shadowColor: "#ccc",

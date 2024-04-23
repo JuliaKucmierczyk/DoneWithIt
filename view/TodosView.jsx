@@ -1,13 +1,27 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
 
-const TodoItem = ({ title, completed }) => {
+const TodoItem = ({ title, completed, onPress }) => {
+  const textDecorationLine = completed ? "line-through" : "none";
+
   return (
-    <View style={styles.todoContainer}>
-      <Text style={styles.todoTitle}>{title}</Text>
-      {completed && <Text style={styles.completed}>Completed</Text>}
-    </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.todoContainer}>
+        <Text
+          style={[styles.todoTitle, { textDecorationLine }]}
+          numberOfLines={1}
+        >
+          {title}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -31,8 +45,21 @@ const TodosView = () => {
     fetchTodos();
   }, []);
 
+  const toggleTodoCompletion = (id) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
   const renderTodo = ({ item }) => (
-    <TodoItem key={item.id} title={item.title} completed={item.completed} />
+    <TodoItem
+      key={item.id}
+      title={item.title}
+      completed={item.completed}
+      onPress={() => toggleTodoCompletion(item.id)}
+    />
   );
 
   return (

@@ -62,21 +62,23 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   photoContainer: {
+    alignItems: "center",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
     padding: 10,
-    margin: 10,
+    marginHorizontal: 40,
+    marginBottom: 20,
     backgroundColor: "#fff",
   },
   photo: {
-    width: 350,
-    height: 200,
-    resizeMode: "center",
+    width: 250,
+    height: 250,
+    margin: 20,
+    resizeMode: "stretch",
   },
   photoTitle: {
     fontSize: 18,
-    paddingBottom: 20,
   },
 });
 

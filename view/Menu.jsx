@@ -41,7 +41,7 @@ const Menu = ({ onPress }) => {
 const styles = StyleSheet.create({
   menuContainer: {
     position: "absolute",
-    top: 60,
+    top: 70,
     left: 0,
     backgroundColor: "#fff",
     width: "100%",
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#007bff",
   },
   menuItem: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     paddingVertical: 10,
   },
   menuText: {
