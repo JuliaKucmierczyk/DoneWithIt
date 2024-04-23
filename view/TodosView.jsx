@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 5,
     padding: 10,
-    margin: 10,
+    marginHorizontal: 20,
+    marginBottom: 15,
   },
   todoTitle: {
     fontSize: 18,

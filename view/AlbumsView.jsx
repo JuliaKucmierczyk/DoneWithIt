@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
+import AlbumDetails from "./pages/AlbumDetails";
 
-const AlbumItem = ({ title }) => {
-  return (
-    <View style={styles.albumContainer}>
-      <Text style={styles.albumTitle}>{title}</Text>
-    </View>
-  );
-};
+const AlbumItem = ({ title, onPress }) => (
+  <TouchableOpacity style={styles.albumContainer} onPress={onPress}>
+    <Text style={styles.albumTitle}>{title}</Text>
+  </TouchableOpacity>
+);
 
 const Separator = () => {
   return <View style={styles.separator} />;
@@ -17,6 +22,7 @@ const Separator = () => {
 const AlbumsView = () => {
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedAlbumId, setSelectedAlbumId] = useState(null);
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -35,7 +41,11 @@ const AlbumsView = () => {
   }, []);
 
   const renderAlbum = ({ item }) => (
-    <AlbumItem key={item.id} title={item.title} />
+    <AlbumItem
+      key={item.id}
+      title={item.title}
+      onPress={() => setSelectedAlbumId(item.id)}
+    />
   );
 
   return (
@@ -48,13 +58,15 @@ const AlbumsView = () => {
           data={albums}
           renderItem={renderAlbum}
           keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={Separator} // Add the separator component
+          ItemSeparatorComponent={Separator}
         />
+      )}
+      {selectedAlbumId && (
+        <AlbumDetails style={styles.details} albumId={selectedAlbumId} />
       )}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   contentView: {
     flex: 1,
@@ -84,6 +96,11 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     backgroundColor: "#ddd",
+  },
+  details: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
 });
 

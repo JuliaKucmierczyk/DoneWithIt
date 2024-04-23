@@ -23,7 +23,7 @@ const UserItem = ({ name, email, onPress }) => {
 const UsersView = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedUser, setSelectedUser] = useState(null); // State for selected user
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -41,12 +41,28 @@ const UsersView = () => {
     fetchUsers();
   }, []);
 
+  const fetchUserDetails = async (userId) => {
+    const albumsResponse = await axios.get(
+      `https://jsonplaceholder.typicode.com/users/${userId}/albums`
+    );
+    const postsResponse = await axios.get(
+      `https://jsonplaceholder.typicode.com/users/${userId}/posts`
+    );
+
+    return { albums: albumsResponse.data, posts: postsResponse.data };
+  };
+
   const renderUser = ({ item }) => (
     <UserItem
       key={item.id}
       name={item.name}
       email={item.email}
-      onPress={() => setSelectedUser(item)}
+      onPress={() => {
+        setSelectedUser(item);
+        fetchUserDetails(item.id).then((userDetails) =>
+          setSelectedUser({ ...item, ...userDetails })
+        );
+      }}
     />
   );
 
@@ -71,6 +87,7 @@ const UsersView = () => {
 const styles = StyleSheet.create({
   contentView: {
     flex: 1,
+    alignItems: "center",
   },
   header: {
     fontSize: 24,
@@ -94,9 +111,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 10,
-  },
-  userDetails: {
-    flex: 1,
   },
   userName: {
     fontSize: 18,
