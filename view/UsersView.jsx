@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   contentView: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
   header: {
     fontSize: 24,

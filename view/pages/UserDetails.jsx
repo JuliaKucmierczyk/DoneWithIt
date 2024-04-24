@@ -64,13 +64,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   albumItem: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fff",
     padding: 5,
     margin: 5,
     borderRadius: 10,
   },
   postItem: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fff",
     padding: 5,
     margin: 5,
     borderRadius: 10,

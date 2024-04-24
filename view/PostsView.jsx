@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
+import PostDetails from "./pages/PostDetails";
 
-const PostItem = ({ title, body }) => {
+const PostItem = ({ title, body, onPress }) => {
   return (
-    <View style={styles.postContainer}>
+    <TouchableOpacity style={styles.postContainer} onPress={onPress}>
       <Text style={styles.postTitle}>{title}</Text>
       <Text style={styles.postBody}>{body}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 const PostsView = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,19 +39,31 @@ const PostsView = () => {
     fetchPosts();
   }, []);
 
-  const renderPost = ({ item }) => <PostItem key={item.id} {...item} />;
+  const renderPost = ({ item }) => (
+    <PostItem
+      key={item.id}
+      title={item.title}
+      body={item.body}
+      onPress={() => setSelectedPost(item.id)}
+    />
+  );
 
   return (
     <View style={styles.contentView}>
-      <Text style={styles.header}>Posts</Text>
-      {loading ? (
-        <Text>Loading...</Text>
+      {selectedPost ? (
+        <>
+          <Text style={styles.header}>Comments</Text>
+          <PostDetails selectedPost={selectedPost} />
+        </>
       ) : (
-        <FlatList
-          data={posts}
-          renderItem={renderPost}
-          keyExtractor={(item) => item.id}
-        />
+        <>
+          <Text style={styles.header}>Posts</Text>
+          <FlatList
+            data={posts}
+            renderItem={renderPost}
+            keyExtractor={(item) => item.id}
+          />
+        </>
       )}
     </View>
   );
@@ -63,10 +83,11 @@ const styles = StyleSheet.create({
   },
   postContainer: {
     padding: 15,
-    margin: 10,
+    marginHorizontal: 20,
+    marginTop: 15,
     borderRadius: 10,
-    backgroundColor: "#fff", // White background for post content
-    shadowColor: "#ccc", // Add a subtle shadow
+    backgroundColor: "#fff",
+    shadowColor: "#ccc",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
@@ -81,6 +102,7 @@ const styles = StyleSheet.create({
   },
   postBody: {
     fontSize: 16,
+    marginBottom: 10,
   },
 });
 

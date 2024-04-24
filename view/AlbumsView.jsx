@@ -50,19 +50,21 @@ const AlbumsView = () => {
 
   return (
     <View style={styles.contentView}>
-      <Text style={styles.header}>Albums</Text>
-      {loading ? (
-        <Text>Loading...</Text>
+      {selectedAlbumId ? (
+        <>
+          <Text style={styles.header}>Album Details</Text>
+          <AlbumDetails albumId={selectedAlbumId} />
+        </>
       ) : (
-        <FlatList
-          data={albums}
-          renderItem={renderAlbum}
-          keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={Separator}
-        />
-      )}
-      {selectedAlbumId && (
-        <AlbumDetails style={styles.details} albumId={selectedAlbumId} />
+        <>
+          <Text style={styles.header}>Albums</Text>
+          <FlatList
+            data={albums}
+            renderItem={renderAlbum}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={Separator}
+          />
+        </>
       )}
     </View>
   );
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
     shadowColor: "#ccc",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowRadius: 10,
   },
   albumTitle: {
     fontSize: 18,
@@ -96,11 +98,6 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     backgroundColor: "#ddd",
-  },
-  details: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
   },
 });
 
